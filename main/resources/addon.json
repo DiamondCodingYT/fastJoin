@@ -1,0 +1,10 @@
+{
+  "uuid": "%uuid%",
+  "name": "FastJoin",
+  "mainClass": "de.diamondCoding.fastJoin.FastJoin",
+  "description": "This addon makes switching or joining a server much easier!",
+  "version": 1,
+  "author": "DiamondCoding",
+  "category": 2,
+  "icon": "http://www.diamondcoding.eu/files/other/fastJoin.png"
+}
