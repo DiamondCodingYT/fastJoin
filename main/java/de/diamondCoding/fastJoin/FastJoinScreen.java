@@ -28,7 +28,7 @@ public class FastJoinScreen extends GuiScreen {
     public void initGui() {
 
         if(showResents) {
-            recentWith = width / 5;
+            recentWith = width / 4;
             if (recentWith < 80) {
                 recentWith = 80;
             }
@@ -50,9 +50,9 @@ public class FastJoinScreen extends GuiScreen {
             for (int i = 10; i < 20; i++) {
                 GuiButton btn = null;
                 if (RecentManager.getResent(i - 10) != null) {
-                    btn = new GuiButton(i, 8, 8 + ((i - 10) * 24), 90, 20, "" + RecentManager.getResent(i - 10).ip);
+                    btn = new GuiButton(i, 8, 8 + ((i - 10) * 24), recentWith, 20, "" + RecentManager.getResent(i - 10).ip);
                 } else {
-                    btn = new GuiButton(i, 8, 8 + ((i - 10) * 24), 90, 20, "Server not set");
+                    btn = new GuiButton(i, 8, 8 + ((i - 10) * 24), recentWith, 20, "Server not set");
                 }
                 this.buttonList.add(btn);
             }
