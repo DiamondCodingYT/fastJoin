@@ -2,9 +2,9 @@ package de.diamondCoding.fastJoin;
 
 import de.diamondCoding.fastJoin.events.ServerJoinListener;
 import de.diamondCoding.fastJoin.events.TickListener;
-import de.diamondCoding.fastJoin.managers.ResentsManager;
+import de.diamondCoding.fastJoin.managers.RecentManager;
 import de.diamondCoding.fastJoin.managers.ServerManager;
-import de.diamondCoding.fastJoin.util.ResentServer;
+import de.diamondCoding.fastJoin.util.RecentServer;
 import net.labymod.api.LabyModAddon;
 import net.labymod.settings.elements.BooleanElement;
 import net.labymod.settings.elements.ControlElement;
@@ -31,7 +31,8 @@ public class FastJoin extends LabyModAddon {
         registerEvents();
 
         ServerManager.init();
-        ResentsManager.init(this);
+        RecentManager.init(this);
+
 
         System.out.println("Enabeld FastJoin");
 
@@ -48,8 +49,8 @@ public class FastJoin extends LabyModAddon {
         this.lastJoin = !this.getConfig().has("lastJoin") || this.getConfig().get("lastJoin").getAsBoolean();
         this.fastJoinKey = this.getConfig().has("fastJoin") ? this.getConfig().get("fastJoin").getAsInt() : fastJoinKey;
         for(int i = 0; i < 10; i++) {
-            if(this.getConfig().has("resent" + i)) {
-                ResentsManager.resents.add(new ResentServer(i, this.getConfig().get("resent" + i).getAsString()));
+            if(this.getConfig().has("recent" + i)) {
+                RecentManager.recentServers.add(new RecentServer(i, this.getConfig().get("recent" + i).getAsString()));
             }
         }
     }

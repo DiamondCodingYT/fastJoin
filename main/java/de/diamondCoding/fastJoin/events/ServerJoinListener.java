@@ -1,7 +1,7 @@
 package de.diamondCoding.fastJoin.events;
 
 import de.diamondCoding.fastJoin.FastJoin;
-import de.diamondCoding.fastJoin.managers.ResentsManager;
+import de.diamondCoding.fastJoin.managers.RecentManager;
 import net.labymod.utils.Consumer;
 import net.labymod.utils.ServerData;
 
@@ -15,7 +15,7 @@ public class ServerJoinListener implements Consumer<ServerData> {
 
     @Override
     public void accept(ServerData serverData) {
-        ResentsManager.addResent(serverData.getIp());
+        RecentManager.addResent(serverData.getIp());
     }
 
 }

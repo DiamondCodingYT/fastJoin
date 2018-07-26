@@ -1,11 +1,11 @@
 package de.diamondCoding.fastJoin.util;
 
-public class ResentServer {
+public class RecentServer {
 
     public int position;
     public String ip;
 
-    public ResentServer(int position, String ip) {
+    public RecentServer(int position, String ip) {
         this.position = position;
         this.ip = ip;
     }

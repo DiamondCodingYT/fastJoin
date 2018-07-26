@@ -1,28 +1,28 @@
 package de.diamondCoding.fastJoin.managers;
 
 import de.diamondCoding.fastJoin.FastJoin;
-import de.diamondCoding.fastJoin.util.ResentServer;
+import de.diamondCoding.fastJoin.util.RecentServer;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ResentsManager {
+public class RecentManager {
 
     static FastJoin addon;
 
-    public static List<ResentServer> resents;
+    public static List<RecentServer> recentServers;
 
     public static void init(FastJoin theAddon) {
         addon = theAddon;
-        resents = new ArrayList<ResentServer>();
+        recentServers = new ArrayList<RecentServer>();
     }
 
     public static void addResent(String ip) {
 
-        for(ResentServer rs : resents) {
+        for(RecentServer rs : recentServers) {
             if(rs.ip.equals(ip)) {
                 int oldPos = rs.position;
-                for(ResentServer rs2 : resents) {
+                for(RecentServer rs2 : recentServers) {
                     if(rs2.position < oldPos) {
                         rs2.position = rs2.position + 1;
                     }
@@ -32,23 +32,23 @@ public class ResentsManager {
             }
         }
 
-        for(ResentServer rs : resents) {
+        for(RecentServer rs : recentServers) {
             if(rs.position == 9) {
-                resents.remove(rs);
+                recentServers.remove(rs);
             } else {
                 rs.position = rs.position + 1;
             }
         }
-        resents.add(new ResentServer(0, ip));
+        recentServers.add(new RecentServer(0, ip));
 
-        for(ResentServer rs : resents) {
-            addon.getConfig().addProperty("resent" + rs.position, rs.ip);
+        for(RecentServer rs : recentServers) {
+            addon.getConfig().addProperty("recent" + rs.position, rs.ip);
         }
         addon.saveConfig();
     }
 
-    public static ResentServer getResent(int pos) {
-        for(ResentServer rs : resents) {
+    public static RecentServer getResent(int pos) {
+        for(RecentServer rs : recentServers) {
             if(rs.position == pos) {
                 return rs;
             }

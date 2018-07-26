@@ -1,6 +1,6 @@
 package de.diamondCoding.fastJoin;
 
-import de.diamondCoding.fastJoin.managers.ResentsManager;
+import de.diamondCoding.fastJoin.managers.RecentManager;
 import de.diamondCoding.fastJoin.managers.ServerManager;
 import net.labymod.main.LabyMod;
 import net.minecraft.client.gui.GuiButton;
@@ -48,8 +48,8 @@ public class FastJoinScreen extends GuiScreen {
         if(showResents) {
             for (int i = 10; i < 20; i++) {
                 GuiButton btn = null;
-                if (ResentsManager.getResent(i - 10) != null) {
-                    btn = new GuiButton(i, 8, 8 + ((i - 10) * 24), 90, 20, "" + ResentsManager.getResent(i - 10).ip);
+                if (RecentManager.getResent(i - 10) != null) {
+                    btn = new GuiButton(i, 8, 8 + ((i - 10) * 24), 90, 20, "" + RecentManager.getResent(i - 10).ip);
                 } else {
                     btn = new GuiButton(i, 8, 8 + ((i - 10) * 24), 90, 20, "Server not set");
                 }
@@ -130,9 +130,9 @@ public class FastJoinScreen extends GuiScreen {
             mc.displayGuiScreen(oldScreen);
         }
         if(button.id > 9 && button.id < 20) {
-            if(ResentsManager.getResent(button.id - 10) != null) {
+            if(RecentManager.getResent(button.id - 10) != null) {
                 if(button.displayString.startsWith("§4")) {
-                    LabyMod.getInstance().connectToServer(ResentsManager.getResent(button.id - 10).ip);
+                    LabyMod.getInstance().connectToServer(RecentManager.getResent(button.id - 10).ip);
                 } else {
                     for(GuiButton btn : buttonList) {
                         if(btn.displayString.startsWith("§4")) {
