@@ -26,7 +26,7 @@ public class FastJoin extends LabyModAddon {
     @Override
     public void onEnable() {
 
-        System.out.println("Enabeling FastJoin ");
+        System.out.println("Enabeling FastJoin");
 
         registerEvents();
 
@@ -34,7 +34,7 @@ public class FastJoin extends LabyModAddon {
         RecentManager.init(this);
 
 
-        System.out.println("Enabeld FastJoin ");
+        System.out.println("Enabeld FastJoin");
 
     }
 
