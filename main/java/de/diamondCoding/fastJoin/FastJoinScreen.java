@@ -16,6 +16,7 @@ public class FastJoinScreen extends GuiScreen {
     public GuiTextField ip;
     public static GuiScreen oldScreen;
     boolean showResents;
+    int recentWith = 0;
 
     public FastJoinScreen(GuiScreen old, boolean lastJoin) {
         oldScreen = old;
@@ -26,23 +27,23 @@ public class FastJoinScreen extends GuiScreen {
 
     public void initGui() {
 
-        Keyboard.enableRepeatEvents(true);
-
         if(showResents) {
-            this.buttonList.add(new GuiButton(1, width / 2 - 100 + 45, height / 4 + 96 + 12 - 48, "Join"));
-            this.buttonList.add(new GuiButton(2, width / 2 - 100 + 45, height / 4 + 96 + 36 - 48, "Back"));
-
-            ip = new GuiTextField(3, fontRendererObj, width / 2 - 100 + 45, height / 4 + 96 + 12 - 36 - 48, 200, 20);
-        } else {
-            this.buttonList.add(new GuiButton(1, width / 2 - 100, height / 4 + 96 + 12 - 48, "Join"));
-            this.buttonList.add(new GuiButton(2, width / 2 - 100, height / 4 + 96 + 36 - 48, "Back"));
-
-            ip = new GuiTextField(3, fontRendererObj, width / 2 - 100, height / 4 + 96 + 12 - 36 - 48, 200, 20);
+            recentWith = width / 5;
+            if (recentWith < 80) {
+                recentWith = 80;
+            }
         }
 
-        ip.setMaxStringLength(50);
+        Keyboard.enableRepeatEvents(true);
+
+        this.buttonList.add(new GuiButton(1, width / 2 - 100 + (recentWith / 2), height / 4 + 96 + 12 - 48, "Join"));
+        this.buttonList.add(new GuiButton(2, width / 2 - 100 + (recentWith / 2), height / 4 + 96 + 36 - 48, "Back"));
+
+        ip = new GuiTextField(3, fontRendererObj, width / 2 - 100 + (recentWith / 2), height / 4 + 96 + 12 - 36 - 48, 200, 20);
+
+
+        ip.setMaxStringLength(0);
         ip.setFocused(true);
-        ip.setText("none");
 
         //recent Buttons
         if(showResents) {
@@ -84,10 +85,7 @@ public class FastJoinScreen extends GuiScreen {
     @Override
     protected void keyTyped(char typedChar, int keyCode) throws IOException {
         ip.textboxKeyTyped(typedChar, keyCode);
-
-        if(ip.getText().startsWith("none")) {
-            ip.setText("");
-        }
+        ip.setMaxStringLength(50);
 
         if(typedChar == '\r') {
             actionPerformed(buttonList.get(0));
@@ -104,16 +102,9 @@ public class FastJoinScreen extends GuiScreen {
 
         drawDefaultBackground();
 
-        if(showResents) {
-            drawString(fontRendererObj, "§8IP: §3" + joinIp, width / 2 - 100 + 45, height / 4 + 96 + 12 - 36 - 48 - 12, 0xffffffff);
-            if (!shortcut.equals("")) {
-                drawString(fontRendererObj, "§4Shortcut: " + shortcut, width / 2 - 100 + 100 + 45, height / 4 + 96 + 12 - 36 - 48 - 12, 0xffffffff);
-            }
-        } else {
-            drawString(fontRendererObj, "§8IP: §3" + joinIp, width / 2 - 100, height / 4 + 96 + 12 - 36 - 48 - 12, 0xffffffff);
-            if (!shortcut.equals("")) {
-                drawString(fontRendererObj, "§4Shortcut: " + shortcut, width / 2 - 100 + 100, height / 4 + 96 + 12 - 36 - 48 - 12, 0xffffffff);
-            }
+        drawString(fontRendererObj, "§8IP: §3" + joinIp, width / 2 - 100 + (recentWith / 2), height / 4 + 96 + 12 - 36 - 48 - 12, 0xffffffff);
+        if (!shortcut.equals("")) {
+            drawString(fontRendererObj, "§4Shortcut: " + shortcut, width / 2 - 100 + 100 + (recentWith / 2), height / 4 + 96 + 12 - 36 - 48 - 12, 0xffffffff);
         }
 
         ip.drawTextBox();
