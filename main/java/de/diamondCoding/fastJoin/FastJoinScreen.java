@@ -1,5 +1,6 @@
 package de.diamondCoding.fastJoin;
 
+import com.sun.prism.paint.Color;
 import de.diamondCoding.fastJoin.managers.RecentManager;
 import de.diamondCoding.fastJoin.managers.ServerManager;
 import net.labymod.main.LabyMod;
@@ -84,8 +85,9 @@ public class FastJoinScreen extends GuiScreen {
 
     @Override
     protected void keyTyped(char typedChar, int keyCode) throws IOException {
-        ip.textboxKeyTyped(typedChar, keyCode);
+
         ip.setMaxStringLength(50);
+        ip.textboxKeyTyped(typedChar, keyCode);
 
         if(typedChar == '\r') {
             actionPerformed(buttonList.get(0));

@@ -26,10 +26,13 @@ public class TickListener {
                 if (Minecraft.getMinecraft().currentScreen instanceof LabyModAddonsGui) {
                     return;
                 }
+                if(Minecraft.getMinecraft().ingameGUI.getChatGUI().getChatOpen()) {
+                    return;
+                }
                 Minecraft.getMinecraft().displayGuiScreen(new FastJoinScreen(Minecraft.getMinecraft().currentScreen, addon.lastJoin));
             }
             if(Keyboard.isKeyDown(Keyboard.KEY_ESCAPE)) {
-                if(Minecraft.getMinecraft().currentScreen instanceof  FastJoinScreen) {
+                if(Minecraft.getMinecraft().currentScreen instanceof FastJoinScreen) {
                     Minecraft.getMinecraft().displayGuiScreen(FastJoinScreen.oldScreen);
                 }
             }
