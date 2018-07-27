@@ -1,6 +1,7 @@
 package de.diamondCoding.fastJoin;
 
-import com.sun.prism.paint.Color;
+import java.awt.Color;
+
 import de.diamondCoding.fastJoin.managers.RecentManager;
 import de.diamondCoding.fastJoin.managers.ServerManager;
 import net.labymod.main.LabyMod;
@@ -17,7 +18,6 @@ public class FastJoinScreen extends GuiScreen {
     public GuiTextField ip;
     public static GuiScreen oldScreen;
     boolean showResents;
-    int recentWith = 0;
 
     public FastJoinScreen(GuiScreen old, boolean lastJoin) {
         oldScreen = old;
@@ -28,19 +28,12 @@ public class FastJoinScreen extends GuiScreen {
 
     public void initGui() {
 
-        if(showResents) {
-            recentWith = width / 4;
-            if (recentWith < 80) {
-                recentWith = 80;
-            }
-        }
-
         Keyboard.enableRepeatEvents(true);
 
-        this.buttonList.add(new GuiButton(1, width / 2 - 100 + (recentWith / 2), height / 4 + 96 + 12 - 48, "Join"));
-        this.buttonList.add(new GuiButton(2, width / 2 - 100 + (recentWith / 2), height / 4 + 96 + 36 - 48, "Back"));
+        this.buttonList.add(new GuiButton(1, width / 2 - 100, height / 4 + 96 + 12 - 48, "Join"));
+        this.buttonList.add(new GuiButton(2, width / 2 - 100, height / 4 + 96 + 36 - 48, "Back"));
 
-        ip = new GuiTextField(3, fontRendererObj, width / 2 - 100 + (recentWith / 2), height / 4 + 96 + 12 - 36 - 48, 200, 20);
+        ip = new GuiTextField(3, fontRendererObj, width / 2 - 100, height / 4 + 96 + 12 - 36 - 48, 200, 20);
 
 
         ip.setMaxStringLength(0);
@@ -48,12 +41,24 @@ public class FastJoinScreen extends GuiScreen {
 
         //recent Buttons
         if(showResents) {
+
+            int top = (height / 4 + 96 + 12 - 36 - 48 - 12 - 20);
+            int bottom = (height / 4 + 96 + 36 - 48 + 20 + 20);
+            int middel = (bottom - top) / 2 + top;
+            int pos = middel - (5 * 24) / 2 + 2;
+
             for (int i = 10; i < 20; i++) {
                 GuiButton btn = null;
+                int x = 8;
+                int num = i - 10;
+                if(i >= 15) {
+                    x = width - 8 - 90;
+                    num = i - 15;
+                }
                 if (RecentManager.getResent(i - 10) != null) {
-                    btn = new GuiButton(i, 8, 8 + ((i - 10) * 24), recentWith, 20, "" + RecentManager.getResent(i - 10).ip);
+                    btn = new GuiButton(i, x, pos + (num * 24), 90, 20, "" + RecentManager.getResent(i - 10).ip);
                 } else {
-                    btn = new GuiButton(i, 8, 8 + ((i - 10) * 24), recentWith, 20, "Server not set");
+                    btn = new GuiButton(i, x, pos + (num * 24), 90, 20, "Server not set");
                 }
                 this.buttonList.add(btn);
             }
@@ -104,9 +109,15 @@ public class FastJoinScreen extends GuiScreen {
 
         drawDefaultBackground();
 
-        drawString(fontRendererObj, "§8IP: §3" + joinIp, width / 2 - 100 + (recentWith / 2), height / 4 + 96 + 12 - 36 - 48 - 12, 0xffffffff);
+        Color a = new Color(5, 5, 5, 100);
+        drawRect(width / 2 - 100 - 20, height / 4 + 96 + 12 - 36 - 48 - 12 - 20, width / 2 + 100 + 20, height / 4 + 96 + 36 - 48 + 20 + 20, a.getRGB());
+
+        drawRect(0, height / 4 + 96 + 12 - 36 - 48 - 12 - 20, 90 + 2 * 8, height / 4 + 96 + 36 - 48 + 20 + 20, a.getRGB());
+        drawRect(width, height / 4 + 96 + 12 - 36 - 48 - 12 - 20, width - 90 - 2 * 8, height / 4 + 96 + 36 - 48 + 20 + 20, a.getRGB());
+
+        drawString(fontRendererObj, "§8IP: §3" + joinIp, width / 2 - 100, height / 4 + 96 + 12 - 36 - 48 - 12, 0xffffffff);
         if (!shortcut.equals("")) {
-            drawString(fontRendererObj, "§4Shortcut: " + shortcut, width / 2 - 100 + 100 + (recentWith / 2), height / 4 + 96 + 12 - 36 - 48 - 12, 0xffffffff);
+            drawString(fontRendererObj, "§4Shortcut: " + shortcut, width / 2 - 100 + 100, height / 4 + 96 + 12 - 36 - 48 - 12, 0xffffffff);
         }
 
         ip.drawTextBox();
