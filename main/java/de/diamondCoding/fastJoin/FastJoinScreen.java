@@ -5,6 +5,7 @@ import java.awt.Color;
 import de.diamondCoding.fastJoin.managers.RecentManager;
 import de.diamondCoding.fastJoin.managers.ServerManager;
 import net.labymod.main.LabyMod;
+import net.labymod.utils.DrawUtils;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.GuiTextField;
@@ -112,8 +113,10 @@ public class FastJoinScreen extends GuiScreen {
         Color a = new Color(5, 5, 5, 100);
         drawRect(width / 2 - 100 - 20, height / 4 + 96 + 12 - 36 - 48 - 12 - 20, width / 2 + 100 + 20, height / 4 + 96 + 36 - 48 + 20 + 20, a.getRGB());
 
-        drawRect(0, height / 4 + 96 + 12 - 36 - 48 - 12 - 20, 90 + 2 * 8, height / 4 + 96 + 36 - 48 + 20 + 20, a.getRGB());
-        drawRect(width, height / 4 + 96 + 12 - 36 - 48 - 12 - 20, width - 90 - 2 * 8, height / 4 + 96 + 36 - 48 + 20 + 20, a.getRGB());
+        if(showResents) {
+            drawRect(0, height / 4 + 96 + 12 - 36 - 48 - 12 - 20, 90 + 2 * 8, height / 4 + 96 + 36 - 48 + 20 + 20, a.getRGB());
+            drawRect(width, height / 4 + 96 + 12 - 36 - 48 - 12 - 20, width - 90 - 2 * 8, height / 4 + 96 + 36 - 48 + 20 + 20, a.getRGB());
+        }
 
         drawString(fontRendererObj, "§8IP: §3" + joinIp, width / 2 - 100, height / 4 + 96 + 12 - 36 - 48 - 12, 0xffffffff);
         if (!shortcut.equals("")) {
