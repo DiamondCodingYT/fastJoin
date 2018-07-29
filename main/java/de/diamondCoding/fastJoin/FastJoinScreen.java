@@ -5,7 +5,7 @@ import java.awt.Color;
 import de.diamondCoding.fastJoin.managers.RecentManager;
 import de.diamondCoding.fastJoin.managers.ServerManager;
 import net.labymod.main.LabyMod;
-import net.labymod.utils.DrawUtils;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.GuiTextField;
@@ -19,6 +19,9 @@ public class FastJoinScreen extends GuiScreen {
     public GuiTextField ip;
     public static GuiScreen oldScreen;
     boolean showResents;
+
+    int animationTime = 10;
+    int ani = 0;
 
     public FastJoinScreen(GuiScreen old, boolean lastJoin) {
         oldScreen = old;
@@ -98,6 +101,9 @@ public class FastJoinScreen extends GuiScreen {
         if(typedChar == '\r') {
             actionPerformed(buttonList.get(0));
         }
+        if(keyCode == Keyboard.KEY_ESCAPE) {
+            Minecraft.getMinecraft().displayGuiScreen(oldScreen);
+        }
 
         joinIp = ip.getText();
         shortcut = ServerManager.getShortcut(joinIp);
@@ -110,20 +116,54 @@ public class FastJoinScreen extends GuiScreen {
 
         drawDefaultBackground();
 
+        if(ani < animationTime) {
+            ani++;
+        }
+
         Color a = new Color(5, 5, 5, 100);
-        drawRect(width / 2 - 100 - 20, height / 4 + 96 + 12 - 36 - 48 - 12 - 20, width / 2 + 100 + 20, height / 4 + 96 + 36 - 48 + 20 + 20, a.getRGB());
+        int left = width / 2 - 100 - 20;
+        int top = height / 4 + 96 + 12 - 36 - 48 - 12 - 20;
+        int right = width / 2 + 100 + 20;
+        int bottom = height / 4 + 96 + 36 - 48 + 20 + 20;
+        float boxHeight = bottom - top;
+        float boxWidth = right - left;
+        drawRect(left, top, (int) (left + (boxWidth / animationTime) * ani), (int) (top + (boxHeight / animationTime) * ani), a.getRGB());
 
         if(showResents) {
-            drawRect(0, height / 4 + 96 + 12 - 36 - 48 - 12 - 20, 90 + 2 * 8, height / 4 + 96 + 36 - 48 + 20 + 20, a.getRGB());
-            drawRect(width, height / 4 + 96 + 12 - 36 - 48 - 12 - 20, width - 90 - 2 * 8, height / 4 + 96 + 36 - 48 + 20 + 20, a.getRGB());
+            left = 0;
+            right = 90 + 2 * 8;
+            boxWidth = right - left;
+            drawRect(left, top, (int) (left + (boxWidth / animationTime) * ani), (int) (top + (boxHeight / animationTime) * ani), a.getRGB());
+            left = width - 90 - 2 * 8;
+            right = width;
+            boxWidth = right - left;
+            System.out.println("left=" + left);
+            System.out.println("right=" + right);
+            System.out.println("boxWith=" + boxWidth);
+            drawRect(left, top, (int) (left + (boxWidth / animationTime) * ani), (int) (top + (boxHeight / animationTime) * ani), a.getRGB());
         }
 
-        drawString(fontRendererObj, "§8IP: §3" + joinIp, width / 2 - 100, height / 4 + 96 + 12 - 36 - 48 - 12, 0xffffffff);
-        if (!shortcut.equals("")) {
-            drawString(fontRendererObj, "§4Shortcut: " + shortcut, width / 2 - 100 + 100, height / 4 + 96 + 12 - 36 - 48 - 12, 0xffffffff);
+        if(ani >= animationTime) {
+            drawString(fontRendererObj, "§8IP: §3" + joinIp, width / 2 - 100, height / 4 + 96 + 12 - 36 - 48 - 12, 0xffffffff);
+            if (!shortcut.equals("")) {
+                drawString(fontRendererObj, "§4Shortcut: " + shortcut, width / 2 - 100 + 100, height / 4 + 96 + 12 - 36 - 48 - 12, 0xffffffff);
+            }
         }
 
-        ip.drawTextBox();
+        if(ani >= animationTime) {
+            ip.drawTextBox();
+            ip.setFocused(true);
+            for(GuiButton btn : buttonList) {
+                btn.visible = true;
+            }
+        } else {
+            ip.setFocused(false);
+            ip.setText("");
+            joinIp = "";
+            for(GuiButton btn : buttonList) {
+                btn.visible = false;
+            }
+        }
 
         super.drawScreen(mouseX, mouseY, partialTicks);
     }

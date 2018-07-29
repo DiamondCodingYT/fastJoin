@@ -18,6 +18,7 @@ public class TickListener {
 
     @SubscribeEvent
     public void onTick(final TickEvent.ClientTickEvent event) {
+
         if(addon.enabeld) {
             if (Keyboard.isKeyDown(addon.fastJoinKey)) {
                 if (Minecraft.getMinecraft().currentScreen instanceof FastJoinScreen) {
@@ -30,11 +31,6 @@ public class TickListener {
                     return;
                 }
                 Minecraft.getMinecraft().displayGuiScreen(new FastJoinScreen(Minecraft.getMinecraft().currentScreen, addon.lastJoin));
-            }
-            if(Keyboard.isKeyDown(Keyboard.KEY_ESCAPE)) {
-                if(Minecraft.getMinecraft().currentScreen instanceof FastJoinScreen) {
-                    Minecraft.getMinecraft().displayGuiScreen(FastJoinScreen.oldScreen);
-                }
             }
         }
     }

@@ -12,6 +12,7 @@ import net.labymod.settings.elements.KeyElement;
 import net.labymod.settings.elements.SettingsElement;
 import net.labymod.utils.Consumer;
 import net.labymod.utils.Material;
+import net.minecraft.client.Minecraft;
 import org.lwjgl.input.Keyboard;
 
 import java.util.List;
@@ -19,6 +20,7 @@ import java.util.List;
 public class FastJoin extends LabyModAddon {
 
     public String pr = "§6[§3Addon§6] §7";
+    public int version = 4;
     public boolean enabeld = true;
     public boolean lastJoin = true;
     public int fastJoinKey = Keyboard.KEY_J;
@@ -32,7 +34,6 @@ public class FastJoin extends LabyModAddon {
 
         ServerManager.init();
         RecentManager.init(this);
-
 
         System.out.println("Enabeld FastJoin");
 
