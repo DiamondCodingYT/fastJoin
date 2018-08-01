@@ -137,9 +137,6 @@ public class FastJoinScreen extends GuiScreen {
             left = width - 90 - 2 * 8;
             right = width;
             boxWidth = right - left;
-            System.out.println("left=" + left);
-            System.out.println("right=" + right);
-            System.out.println("boxWith=" + boxWidth);
             drawRect(left, top, (int) (left + (boxWidth / animationTime) * ani), (int) (top + (boxHeight / animationTime) * ani), a.getRGB());
         }
 
