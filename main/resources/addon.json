@@ -3,7 +3,7 @@
   "name": "FastJoin",
   "mainClass": "de.diamondCoding.fastJoin.FastJoin",
   "description": "This addon makes switching or joining a server much easier!",
-  "version": 4,
+  "version": 6,
   "author": "DiamondCoding",
   "category": 2,
   "icon": "http://www.diamondcoding.eu/files/other/fastJoin.png"

@@ -4,7 +4,14 @@ import java.awt.Color;
 
 import de.diamondCoding.fastJoin.managers.RecentManager;
 import de.diamondCoding.fastJoin.managers.ServerManager;
+import net.labymod.core.LabyModCore;
+import net.labymod.core.ServerPingerData;
+import net.labymod.gui.ModGuiScreenServerList;
 import net.labymod.main.LabyMod;
+import net.labymod.utils.Consumer;
+import net.labymod.utils.DrawUtils;
+import net.labymod.utils.ModColor;
+import net.labymod.utils.manager.ServerInfoRenderer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
@@ -13,6 +20,7 @@ import org.lwjgl.input.Keyboard;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
 
 public class FastJoinScreen extends GuiScreen {
 
@@ -23,9 +31,14 @@ public class FastJoinScreen extends GuiScreen {
     int animationTime = 10;
     int ani = 0;
 
+    ServerInfoRenderer serverInfoRenderer;
+    private long updateCooldown = 2000L;
+    private long lastUpdate = 0L;
+
     public FastJoinScreen(GuiScreen old, boolean lastJoin) {
         oldScreen = old;
         showResents = lastJoin;
+        serverInfoRenderer = new ServerInfoRenderer("empty", new ServerPingerData("empty", 3000L));
     }
 
     private List<GuiButton> resents;
@@ -105,9 +118,22 @@ public class FastJoinScreen extends GuiScreen {
             Minecraft.getMinecraft().displayGuiScreen(oldScreen);
         }
 
-        joinIp = ip.getText();
-        shortcut = ServerManager.getShortcut(joinIp);
-        joinIp = ServerManager.getFullIp(joinIp);
+        if(ani >= animationTime) {
+            joinIp = ip.getText();
+            shortcut = ServerManager.getShortcut(joinIp);
+            joinIp = ServerManager.getFullIp(joinIp);
+        } else {
+            joinIp = "";
+        }
+
+        this.lastUpdate = System.currentTimeMillis();
+        LabyModCore.getServerPinger().pingServer((ExecutorService)null, this.lastUpdate, joinIp.equalsIgnoreCase("") ? "empty" : joinIp, new Consumer<ServerPingerData>() {
+            public void accept(ServerPingerData accepted) {
+                if (accepted == null || accepted.getTimePinged() == lastUpdate) {
+                    serverInfoRenderer = new ServerInfoRenderer(joinIp.equalsIgnoreCase("") ? "empty" : joinIp, accepted);
+                }
+            }
+        });
 
     }
 
@@ -145,6 +171,19 @@ public class FastJoinScreen extends GuiScreen {
             if (!shortcut.equals("")) {
                 drawString(fontRendererObj, "§4Shortcut: " + shortcut, width / 2 - 100 + 100, height / 4 + 96 + 12 - 36 - 48 - 12, 0xffffffff);
             }
+        }
+
+        if(ani >= animationTime) {
+            //infoRenderer.drawEntry(width / 2 - 100, height / 4 + 96 + 36 - 48 + 24, 90, mouseX, mouseY);
+
+            DrawUtils drawUtils = LabyMod.getInstance().getDrawUtils();
+            int leftBound = this.width / 2 - 150;
+            int rightBound = this.width / 2 + 150;
+            int posY = 20;
+            int height = 30;
+            drawUtils.drawRectangle(leftBound, posY - 4, rightBound, posY + 6 + height, -2147483648);
+            this.serverInfoRenderer.drawEntry(leftBound + 3, posY, rightBound - leftBound, mouseX, mouseY);
+
         }
 
         if(ani >= animationTime) {

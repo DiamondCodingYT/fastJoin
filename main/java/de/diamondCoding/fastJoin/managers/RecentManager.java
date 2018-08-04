@@ -4,6 +4,7 @@ import de.diamondCoding.fastJoin.FastJoin;
 import de.diamondCoding.fastJoin.util.RecentServer;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class RecentManager {
@@ -32,12 +33,27 @@ public class RecentManager {
             }
         }
 
-        for(RecentServer rs : recentServers) {
+        boolean iterating = true;
+        Iterator<RecentServer> iter = recentServers.iterator();
+        while (iter.hasNext() && iterating) {
+            //System.out.println("Starting a new Ding");
+            RecentServer rs = iter.next();
             if(rs.position == 9) {
+                //System.out.println("Deliting Number 9...");
                 recentServers.remove(rs);
-            } else {
-                rs.position = rs.position + 1;
+                iterating = false;
+                //System.out.println("Number 9 was deleted and stoped iterating");
             }
+        }
+
+        iterating = true;
+        Iterator<RecentServer> iter2 = recentServers.iterator();
+        while (iter2.hasNext() && iterating) {
+            //System.out.println("Starting a new Ding for Backshifting");
+            RecentServer rs = iter2.next();
+            //System.out.println("Backshifting...");
+            rs.position = rs.position + 1;
+            //System.out.println("Backshifted");
         }
         recentServers.add(new RecentServer(0, ip));
 

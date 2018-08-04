@@ -23,7 +23,7 @@ public class ServerManager {
         mcServer.add(new JoinabelServer("bausucht.net", "bs"));
         mcServer.add(new JoinabelServer("blocksmc.com", "blocks"));
         mcServer.add(new JoinabelServer("randymc.de", "randy"));
-        mcServer.add(new JoinabelServer("teamkudo.de", "kudo"));
+        mcServer.add(new JoinabelServer("teamkyudo.de", "kyudo"));
         mcServer.add(new JoinabelServer("varoxcraft.de", "varox"));
         mcServer.add(new JoinabelServer("havocmc.net", "havoc"));
     }
