@@ -19,7 +19,7 @@ import java.util.List;
 
 public class FastJoin extends LabyModAddon {
 
-    public String pr = "§6[§3Addon§6] §7";
+    //public String pr = "§6[§3Addon§6] §7";
     public int version = 4;
     public boolean enabeld = true;
     public boolean lastJoin = true;
