@@ -9,13 +9,13 @@ import java.util.List;
 
 public class RecentManager {
 
-    static FastJoin addon;
+    private static FastJoin addon;
 
     public static List<RecentServer> recentServers;
 
     public static void init(FastJoin theAddon) {
         addon = theAddon;
-        recentServers = new ArrayList<RecentServer>();
+        recentServers = new ArrayList<>();
     }
 
     public static void addResent(String ip) {
@@ -36,24 +36,17 @@ public class RecentManager {
         boolean iterating = true;
         Iterator<RecentServer> iter = recentServers.iterator();
         while (iter.hasNext() && iterating) {
-            //System.out.println("Starting a new Ding");
             RecentServer rs = iter.next();
             if(rs.position == 9) {
-                //System.out.println("Deliting Number 9...");
                 recentServers.remove(rs);
                 iterating = false;
-                //System.out.println("Number 9 was deleted and stoped iterating");
             }
         }
 
-        iterating = true;
         Iterator<RecentServer> iter2 = recentServers.iterator();
-        while (iter2.hasNext() && iterating) {
-            //System.out.println("Starting a new Ding for Backshifting");
+        while (iter2.hasNext()) {
             RecentServer rs = iter2.next();
-            //System.out.println("Backshifting...");
             rs.position = rs.position + 1;
-            //System.out.println("Backshifted");
         }
         recentServers.add(new RecentServer(0, ip));
 
