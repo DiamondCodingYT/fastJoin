@@ -4,18 +4,16 @@ import java.awt.Color;
 
 import de.diamondCoding.fastJoin.managers.RecentManager;
 import de.diamondCoding.fastJoin.managers.ServerManager;
+import de.diamondCoding.fastJoin.util.BackgroundType;
 import net.labymod.core.LabyModCore;
 import net.labymod.core.ServerPingerData;
-import net.labymod.gui.ModGuiScreenServerList;
 import net.labymod.main.LabyMod;
 import net.labymod.utils.Consumer;
 import net.labymod.utils.DrawUtils;
-import net.labymod.utils.ModColor;
 import net.labymod.utils.manager.ServerInfoRenderer;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.client.gui.GuiTextField;
+import net.minecraft.client.gui.*;
+import net.minecraft.util.ResourceLocation;
 import org.lwjgl.input.Keyboard;
 
 import java.io.IOException;
@@ -24,18 +22,21 @@ import java.util.concurrent.ExecutorService;
 
 public class FastJoinScreen extends GuiScreen {
 
-    public GuiTextField ip;
-    public static GuiScreen oldScreen;
-    boolean showResents;
+    private FastJoin addon;
 
-    int animationTime = 10;
-    int ani = 0;
+    private GuiTextField ip;
+    private GuiScreen oldScreen;
+    private boolean showResents;
 
-    ServerInfoRenderer serverInfoRenderer;
+    private int animationTime = 10;
+    private int ani = 0;
+
+    private ServerInfoRenderer serverInfoRenderer;
     private long updateCooldown = 2000L;
     private long lastUpdate = 0L;
 
-    public FastJoinScreen(GuiScreen old, boolean lastJoin) {
+    public FastJoinScreen(FastJoin addon, GuiScreen old, boolean lastJoin) {
+        this.addon = addon;
         oldScreen = old;
         showResents = lastJoin;
         serverInfoRenderer = new ServerInfoRenderer("empty", new ServerPingerData("empty", 3000L));
@@ -65,7 +66,7 @@ public class FastJoinScreen extends GuiScreen {
             int pos = middel - (5 * 24) / 2 + 2;
 
             for (int i = 10; i < 20; i++) {
-                GuiButton btn = null;
+                GuiButton btn;
                 int x = 8;
                 int num = i - 10;
                 if(i >= 15) {
@@ -102,8 +103,8 @@ public class FastJoinScreen extends GuiScreen {
         }
     }
 
-    String joinIp = "";
-    String shortcut = "";
+    private String joinIp = "";
+    private String shortcut = "";
 
     @Override
     protected void keyTyped(char typedChar, int keyCode) throws IOException {
@@ -127,7 +128,7 @@ public class FastJoinScreen extends GuiScreen {
         }
 
         this.lastUpdate = System.currentTimeMillis();
-        LabyModCore.getServerPinger().pingServer((ExecutorService)null, this.lastUpdate, joinIp.equalsIgnoreCase("") ? "empty" : joinIp, new Consumer<ServerPingerData>() {
+        LabyModCore.getServerPinger().pingServer(null, this.lastUpdate, joinIp.equalsIgnoreCase("") ? "empty" : joinIp, new Consumer<ServerPingerData>() {
             public void accept(ServerPingerData accepted) {
                 if (accepted == null || accepted.getTimePinged() == lastUpdate) {
                     serverInfoRenderer = new ServerInfoRenderer(joinIp.equalsIgnoreCase("") ? "empty" : joinIp, accepted);
@@ -140,7 +141,15 @@ public class FastJoinScreen extends GuiScreen {
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
 
-        drawDefaultBackground();
+        if(this.mc.theWorld == null) {
+            if(addon.backgroundType.equals(BackgroundType.COLOR)) {
+                drawRect(0, 0, Minecraft.getMinecraft().displayHeight, Minecraft.getMinecraft().displayWidth, addon.color.getRGB());
+            } else {
+                drawDefaultBackground();
+            }
+        } else {
+            drawDefaultBackground();
+        }
 
         if(ani < animationTime) {
             ani++;

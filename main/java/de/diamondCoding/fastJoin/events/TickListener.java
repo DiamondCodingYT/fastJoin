@@ -28,7 +28,7 @@ public class TickListener {
                 if (Minecraft.getMinecraft().ingameGUI.getChatGUI().getChatOpen() || Minecraft.getMinecraft().currentScreen instanceof FastJoinScreen || Minecraft.getMinecraft().currentScreen instanceof LabyModAddonsGui || Minecraft.getMinecraft().currentScreen instanceof GuiEditSign || Minecraft.getMinecraft().currentScreen instanceof GuiScreenBook || Minecraft.getMinecraft().currentScreen instanceof GuiCreateWorld || Minecraft.getMinecraft().currentScreen instanceof GuiCommandBlock || Minecraft.getMinecraft().currentScreen instanceof GuiRenameWorld || Minecraft.getMinecraft().currentScreen instanceof GuiScreenAddServer) {
                     return;
                 }
-                Minecraft.getMinecraft().displayGuiScreen(new FastJoinScreen(Minecraft.getMinecraft().currentScreen, addon.lastJoin));
+                Minecraft.getMinecraft().displayGuiScreen(new FastJoinScreen(addon, Minecraft.getMinecraft().currentScreen, addon.lastJoin));
             }
         }
     }
