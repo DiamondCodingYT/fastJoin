@@ -33,6 +33,7 @@ public class RecentManager {
             }
         }
 
+        /*
         boolean iterating = true;
         Iterator<RecentServer> iter = recentServers.iterator();
         while (iter.hasNext() && iterating) {
@@ -40,6 +41,16 @@ public class RecentManager {
             if(rs.position == 9) {
                 recentServers.remove(rs);
                 iterating = false;
+            }
+        }
+        */
+        
+        for(Iterator<RecentServer> it = recentServers.iterator(); it.hasNext();) {
+            RecentServer server = it.next();
+            
+            if(server.position == 9) {
+                it.remove();
+                break;
             }
         }
 
