@@ -48,7 +48,7 @@ public class RecentManager {
         for(Iterator<RecentServer> it = recentServers.iterator(); it.hasNext();) {
             RecentServer server = it.next();
             
-            if(rs.position == 9) {
+            if(server.position == 9) {
                 it.remove();
                 break;
             }
