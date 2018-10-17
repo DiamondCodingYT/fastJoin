@@ -15,11 +15,12 @@ public class RecentManager {
 
     public static void init(FastJoin theAddon) {
         addon = theAddon;
-        recentServers = new ArrayList<>();
+        recentServers = new ArrayList<RecentServer>();
     }
 
     public static void addResent(String ip) {
 
+        //If was in List that put it to the Front
         for(RecentServer rs : recentServers) {
             if(rs.ip.equals(ip)) {
                 int oldPos = rs.position;
@@ -33,30 +34,31 @@ public class RecentManager {
             }
         }
 
-        boolean iterating = true;
-        Iterator<RecentServer> iter = recentServers.iterator();
-        while (iter.hasNext() && iterating) {
-            RecentServer rs = iter.next();
+        //Removing the oldest
+        List<RecentServer> remove = new ArrayList<RecentServer>();
+        for(RecentServer rs : recentServers) {
             if(rs.position == 9) {
-                recentServers.remove(rs);
-                iterating = false;
+                remove.add(rs);
             }
         }
+        recentServers.removeAll(remove);
 
-        Iterator<RecentServer> iter2 = recentServers.iterator();
-        while (iter2.hasNext()) {
-            RecentServer rs = iter2.next();
+        //Backshift the others
+        Iterator<RecentServer> iter = recentServers.iterator();
+        while (iter.hasNext()) {
+            RecentServer rs = iter.next();
             rs.position = rs.position + 1;
         }
         recentServers.add(new RecentServer(0, ip));
 
+        //Saving
         for(RecentServer rs : recentServers) {
             addon.getConfig().addProperty("recent" + rs.position, rs.ip);
         }
         addon.saveConfig();
     }
 
-    public static RecentServer getResent(int pos) {
+    public static RecentServer getRecent(int pos) {
         for(RecentServer rs : recentServers) {
             if(rs.position == pos) {
                 return rs;
