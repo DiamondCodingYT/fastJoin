@@ -4,7 +4,6 @@ import java.awt.Color;
 
 import de.diamondCoding.fastJoin.managers.RecentManager;
 import de.diamondCoding.fastJoin.managers.ServerManager;
-import de.diamondCoding.fastJoin.util.BackgroundType;
 import net.labymod.core.LabyModCore;
 import net.labymod.core.ServerPingerData;
 import net.labymod.main.LabyMod;
@@ -13,12 +12,9 @@ import net.labymod.utils.DrawUtils;
 import net.labymod.utils.manager.ServerInfoRenderer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.*;
-import net.minecraft.util.ResourceLocation;
 import org.lwjgl.input.Keyboard;
 
 import java.io.IOException;
-import java.util.List;
-import java.util.concurrent.ExecutorService;
 
 public class FastJoinScreen extends GuiScreen {
 
@@ -28,11 +24,10 @@ public class FastJoinScreen extends GuiScreen {
     private GuiScreen oldScreen;
     private boolean showResents;
 
-    private int animationTime = 10;
+    public static int animationTime = 10;
     private int ani = 0;
 
     private ServerInfoRenderer serverInfoRenderer;
-    private long updateCooldown = 2000L;
     private long lastUpdate = 0L;
 
     public FastJoinScreen(FastJoin addon, GuiScreen old, boolean lastJoin) {
@@ -41,8 +36,6 @@ public class FastJoinScreen extends GuiScreen {
         showResents = lastJoin;
         serverInfoRenderer = new ServerInfoRenderer("empty", new ServerPingerData("empty", 3000L));
     }
-
-    private List<GuiButton> resents;
 
     public void initGui() {
 
@@ -73,8 +66,8 @@ public class FastJoinScreen extends GuiScreen {
                     x = width - 8 - 90;
                     num = i - 15;
                 }
-                if (RecentManager.getResent(i - 10) != null) {
-                    btn = new GuiButton(i, x, pos + (num * 24), 90, 20, "" + RecentManager.getResent(i - 10).ip);
+                if (RecentManager.getRecent(i - 10) != null) {
+                    btn = new GuiButton(i, x, pos + (num * 24), 90, 20, "" + RecentManager.getRecent(i - 10).ip);
                 } else {
                     btn = new GuiButton(i, x, pos + (num * 24), 90, 20, "Server not set");
                 }
@@ -141,21 +134,13 @@ public class FastJoinScreen extends GuiScreen {
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
 
-        if(this.mc.theWorld == null) {
-            if(addon.backgroundType.equals(BackgroundType.COLOR)) {
-                drawRect(0, 0, Minecraft.getMinecraft().displayHeight, Minecraft.getMinecraft().displayWidth, addon.color.getRGB());
-            } else {
-                drawDefaultBackground();
-            }
-        } else {
-            drawDefaultBackground();
-        }
+        drawDefaultBackground();
 
         if(ani < animationTime) {
             ani++;
         }
 
-        Color a = new Color(5, 5, 5, 100);
+        Color a = new Color(5, 5, 5, 120);
         int left = width / 2 - 100 - 20;
         int top = height / 4 + 96 + 12 - 36 - 48 - 12 - 20;
         int right = width / 2 + 100 + 20;
@@ -163,6 +148,14 @@ public class FastJoinScreen extends GuiScreen {
         float boxHeight = bottom - top;
         float boxWidth = right - left;
         drawRect(left, top, (int) (left + (boxWidth / animationTime) * ani), (int) (top + (boxHeight / animationTime) * ani), a.getRGB());
+
+        //Error
+        if(ServerManager.serverError) {
+            String errorMessage = "§cFastJoin couldn't connect to the Server, so you are using an offline List of the Ips.";
+            ScaledResolution sr = new ScaledResolution(Minecraft.getMinecraft());
+            int posX = sr.getScaledWidth() / 2 - Minecraft.getMinecraft().fontRendererObj.getStringWidth(errorMessage) / 2;
+            drawString(fontRendererObj, errorMessage, posX, 5, 0xffffffff);
+        }
 
         if(showResents) {
             left = 0;
@@ -216,15 +209,17 @@ public class FastJoinScreen extends GuiScreen {
     @Override
     protected void actionPerformed(GuiButton button) throws IOException {
         if(button.id == 1) {
-            LabyMod.getInstance().connectToServer(joinIp);
+            try {
+                LabyMod.getInstance().connectToServer(joinIp);
+            } catch(Exception ex) {}
         }
         if(button.id == 2) {
             mc.displayGuiScreen(oldScreen);
         }
         if(button.id > 9 && button.id < 20) {
-            if(RecentManager.getResent(button.id - 10) != null) {
+            if(RecentManager.getRecent(button.id - 10) != null) {
                 if(button.displayString.startsWith("§4")) {
-                    LabyMod.getInstance().connectToServer(RecentManager.getResent(button.id - 10).ip);
+                    LabyMod.getInstance().connectToServer(RecentManager.getRecent(button.id - 10).ip);
                 } else {
                     for(GuiButton btn : buttonList) {
                         if(btn.displayString.startsWith("§4")) {
