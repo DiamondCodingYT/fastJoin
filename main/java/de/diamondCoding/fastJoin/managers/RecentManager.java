@@ -20,7 +20,7 @@ public class RecentManager {
 
     public static void addResent(String ip) {
 
-        //If was in List that put it to the Front
+        //If the item was in List than put it to the Front
         for(RecentServer rs : recentServers) {
             if(rs.ip.equals(ip)) {
                 int oldPos = rs.position;
