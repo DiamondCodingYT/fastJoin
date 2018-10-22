@@ -7,7 +7,7 @@ import net.labymod.utils.ServerData;
 
 public class ServerJoinListener implements Consumer<ServerData> {
 
-    FastJoin addon;
+    private FastJoin addon;
 
     public ServerJoinListener(FastJoin addon) {
         this.addon = addon;
@@ -15,7 +15,7 @@ public class ServerJoinListener implements Consumer<ServerData> {
 
     @Override
     public void accept(ServerData serverData) {
-        RecentManager.addResent(serverData.getIp());
+        RecentManager.addRecent(serverData.getIp());
     }
 
 }

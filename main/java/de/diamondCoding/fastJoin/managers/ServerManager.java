@@ -12,7 +12,7 @@ import java.util.List;
 
 public class ServerManager {
 
-    public static List<JoinabelServer> mcServers;
+    private static List<JoinabelServer> mcServers;
     public static boolean serverError = false;
 
     public static void init() {
@@ -20,7 +20,7 @@ public class ServerManager {
         fillServers();
     }
 
-    public static void fillServers() {
+    private static void fillServers() {
         try {
 
             URL oracle = new URL("http://www.diamondcoding.eu/fastJoin/shortcuts.php");
@@ -39,9 +39,6 @@ public class ServerManager {
             }
             in.close();
 
-        } catch(MalformedURLException ex) {
-            ex.printStackTrace();
-            serverError = true;
         } catch (IOException e) {
             e.printStackTrace();
             serverError = true;
@@ -62,7 +59,7 @@ public class ServerManager {
             mcServers.add(new JoinabelServer("teamkyudo.de", "kyudo"));
             mcServers.add(new JoinabelServer("varoxcraft.de", "varox"));
             mcServers.add(new JoinabelServer("havocmc.net", "havoc"));
-            System.out.println("Cause of a Server error the Minecraft Servers List was filled fro an offline List.");
+            System.out.println("Cause of a Server error, the Shortcut List was filled from an offline List.");
         } else {
             System.out.println("The Server List was filled with the Servers from the Server. xD");
         }

@@ -55,8 +55,8 @@ public class FastJoinScreen extends GuiScreen {
 
             int top = (height / 4 + 96 + 12 - 36 - 48 - 12 - 20);
             int bottom = (height / 4 + 96 + 36 - 48 + 20 + 20);
-            int middel = (bottom - top) / 2 + top;
-            int pos = middel - (5 * 24) / 2 + 2;
+            int middle = (bottom - top) / 2 + top;
+            int pos = middle - (5 * 24) / 2 + 2;
 
             for (int i = 10; i < 20; i++) {
                 GuiButton btn;
@@ -151,7 +151,7 @@ public class FastJoinScreen extends GuiScreen {
 
         //Error
         if(ServerManager.serverError) {
-            String errorMessage = "§cFastJoin couldn't connect to the Server, so you are using an offline List of the Ips.";
+            String errorMessage = "§cFastJoin couldn't connect to the Server, so you are using an offline Shortcut List.";
             ScaledResolution sr = new ScaledResolution(Minecraft.getMinecraft());
             int posX = sr.getScaledWidth() / 2 - Minecraft.getMinecraft().fontRendererObj.getStringWidth(errorMessage) / 2;
             drawString(fontRendererObj, errorMessage, posX, 5, 0xffffffff);
@@ -210,7 +210,9 @@ public class FastJoinScreen extends GuiScreen {
     protected void actionPerformed(GuiButton button) throws IOException {
         if(button.id == 1) {
             try {
-                LabyMod.getInstance().connectToServer(joinIp);
+                if(!joinIp.replaceAll(" ", "").equals("")) {
+                    LabyMod.getInstance().connectToServer(joinIp);
+                }
             } catch(Exception ex) {}
         }
         if(button.id == 2) {

@@ -17,21 +17,21 @@ import java.util.List;
 public class FastJoin extends LabyModAddon {
 
     public int version = 9;
-    public boolean enabeld = true;
+    public boolean enabled = true;
     public boolean lastJoin = true;
     public int fastJoinKey = Keyboard.KEY_J;
 
     @Override
     public void onEnable() {
 
-        System.out.println("Enabeling FastJoin");
+        System.out.println("Enabling FastJoin");
 
         registerEvents();
 
         ServerManager.init();
         RecentManager.init(this);
 
-        System.out.println("Enabeled FastJoin");
+        System.out.println("Enabled FastJoin");
 
     }
 
@@ -42,7 +42,7 @@ public class FastJoin extends LabyModAddon {
 
     @Override
     public void loadConfig() {
-        this.enabeld = !this.getConfig().has("enabeld") || this.getConfig().get("enabeld").getAsBoolean();
+        this.enabled = !this.getConfig().has("enabled") || this.getConfig().get("enabled").getAsBoolean();
         this.lastJoin = !this.getConfig().has("lastJoin") || this.getConfig().get("lastJoin").getAsBoolean();
         this.fastJoinKey = this.getConfig().has("fastJoin") ? this.getConfig().get("fastJoin").getAsInt() : fastJoinKey;
         FastJoinScreen.animationTime = this.getConfig().has("aniTime") ? this.getConfig().get("aniTime").getAsInt() : FastJoinScreen.animationTime;
@@ -56,16 +56,16 @@ public class FastJoin extends LabyModAddon {
     @Override
     protected void fillSettings(final List<SettingsElement> settings) {
 
-        final BooleanElement enabeldElement = new BooleanElement( "Enabled" , new ControlElement.IconData( Material.LEVER ), new Consumer<Boolean>() {
+        final BooleanElement enabledElement = new BooleanElement( "Enabled" , new ControlElement.IconData( Material.LEVER ), new Consumer<Boolean>() {
             @Override
             public void accept(final Boolean accepted ) {
-                FastJoin.this.enabeld = accepted;
+                FastJoin.this.enabled = accepted;
 
-                FastJoin.this.getConfig().addProperty("enabeld", enabeld);
+                FastJoin.this.getConfig().addProperty("enabled", enabled);
                 FastJoin.this.saveConfig();
             }
-        } , enabeld);
-        settings.add(enabeldElement);
+        } , enabled);
+        settings.add(enabledElement);
 
         final BooleanElement lastJoinElement = new BooleanElement( "Show recent servers" , new ControlElement.IconData("icons/recents.png"), new Consumer<Boolean>() {
             @Override

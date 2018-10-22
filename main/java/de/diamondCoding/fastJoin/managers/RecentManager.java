@@ -18,7 +18,7 @@ public class RecentManager {
         recentServers = new ArrayList<RecentServer>();
     }
 
-    public static void addResent(String ip) {
+    public static void addRecent(String ip) {
 
         //If the item was in List than put it to the Front
         for(RecentServer rs : recentServers) {

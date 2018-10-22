@@ -3,6 +3,7 @@ package de.diamondCoding.fastJoin.events;
 import de.diamondCoding.fastJoin.FastJoin;
 import de.diamondCoding.fastJoin.FastJoinScreen;
 import net.labymod.gui.labymodchat.GuiChatLayout;
+import net.labymod.main.LabyMod;
 import net.labymod.settings.LabyModAddonsGui;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.*;
@@ -24,7 +25,7 @@ public class TickListener {
     @SubscribeEvent
     public void onTick(final TickEvent.ClientTickEvent event) {
 
-        if(addon.enabeld) {
+        if(addon.enabled) {
             if (Keyboard.isKeyDown(addon.fastJoinKey)) {
                 if (Minecraft.getMinecraft().ingameGUI.getChatGUI().getChatOpen() || Minecraft.getMinecraft().currentScreen instanceof FastJoinScreen || Minecraft.getMinecraft().currentScreen instanceof LabyModAddonsGui || Minecraft.getMinecraft().currentScreen instanceof GuiEditSign || Minecraft.getMinecraft().currentScreen instanceof GuiScreenBook || Minecraft.getMinecraft().currentScreen instanceof GuiCreateWorld || Minecraft.getMinecraft().currentScreen instanceof GuiCommandBlock || Minecraft.getMinecraft().currentScreen instanceof GuiRenameWorld || Minecraft.getMinecraft().currentScreen instanceof GuiScreenAddServer || Minecraft.getMinecraft().currentScreen instanceof GuiChatLayout) {
                     return;
