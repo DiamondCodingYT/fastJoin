@@ -27,6 +27,8 @@ public class FastJoinScreen extends GuiScreen {
     public static int animationTime = 10;
     private int ani = 0;
 
+    String addShortcutMessage = "§aDein Lieblings Server hat keinen Shortcut? ";
+
     private ServerInfoRenderer serverInfoRenderer;
     private long lastUpdate = 0L;
 
@@ -43,9 +45,10 @@ public class FastJoinScreen extends GuiScreen {
 
         this.buttonList.add(new GuiButton(1, width / 2 - 100, height / 4 + 96 + 12 - 48, "Join"));
         this.buttonList.add(new GuiButton(2, width / 2 - 100, height / 4 + 96 + 36 - 48, "Back"));
+        ScaledResolution sr = new ScaledResolution(Minecraft.getMinecraft());
+        this.buttonList.add(new GuiButton(4, Minecraft.getMinecraft().fontRendererObj.getStringWidth(addShortcutMessage) + 5, sr.getScaledHeight() - 5 - 20, 90, 20, "§2Frage ihn an."));
 
         ip = new GuiTextField(3, fontRendererObj, width / 2 - 100, height / 4 + 96 + 12 - 36 - 48, 200, 20);
-
 
         ip.setMaxStringLength(0);
         ip.setFocused(true);
@@ -157,6 +160,12 @@ public class FastJoinScreen extends GuiScreen {
             drawString(fontRendererObj, errorMessage, posX, 5, 0xffffffff);
         }
 
+        //Request Shortcut
+        ScaledResolution sr = new ScaledResolution(Minecraft.getMinecraft());
+        drawString(fontRendererObj, addShortcutMessage, 5, sr.getScaledHeight() - 12 - 5, 0xffffffff);
+
+
+
         if(showResents) {
             left = 0;
             right = 90 + 2 * 8;
@@ -217,6 +226,9 @@ public class FastJoinScreen extends GuiScreen {
         }
         if(button.id == 2) {
             mc.displayGuiScreen(oldScreen);
+        }
+        if(button.id == 4) {
+            LabyMod.getInstance().openWebpage("http://diamondcoding.eu/requestShortcut.php", true);
         }
         if(button.id > 9 && button.id < 20) {
             if(RecentManager.getRecent(button.id - 10) != null) {
