@@ -68,7 +68,7 @@ public class FastJoin extends LabyModAddon {
         } , enabled);
         settings.add(enabledElement);
 
-        final BooleanElement lastJoinElement = new BooleanElement( "Show recent servers" , new ControlElement.IconData("icons/recents.png"), new Consumer<Boolean>() {
+        final BooleanElement lastJoinElement = new BooleanElement( "Show recent servers" , new ControlElement.IconData(Material.REDSTONE_COMPARATOR), new Consumer<Boolean>() {
             @Override
             public void accept(final Boolean accepted ) {
                 FastJoin.this.lastJoin = accepted;
@@ -93,8 +93,8 @@ public class FastJoin extends LabyModAddon {
         } );
         settings.add( scalingSliderElement );
 
-        final KeyElement keyElement = new KeyElement( "Open FastJoin" ,
-                new ControlElement.IconData("icons/openFastJoin.png") ,
+        final KeyElement keyElement = new KeyElement( "Open FastJoin",
+                new ControlElement.IconData(Material.EYE_OF_ENDER),
                 fastJoinKey, new Consumer<Integer>() {
             @Override
             public void accept( Integer accepted ) {
