@@ -9,10 +9,7 @@ import net.labymod.api.LabyModAddon;
 import net.labymod.settings.elements.*;
 import net.labymod.utils.Consumer;
 import net.labymod.utils.Material;
-import net.minecraft.client.Minecraft;
 import org.lwjgl.input.Keyboard;
-
-import java.awt.*;
 import java.util.List;
 
 public class FastJoin extends LabyModAddon {
