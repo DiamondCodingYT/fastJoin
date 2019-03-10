@@ -28,8 +28,6 @@ public class FastJoinScreen extends GuiScreen {
     public static int animationTime = 10;
     private int ani = 0;
 
-    String addShortcutMessage = "§aDein Lieblings Server hat keinen Shortcut? ";
-
     private ServerInfoRenderer serverInfoRenderer;
     private long lastUpdate = 0L;
 
@@ -47,8 +45,7 @@ public class FastJoinScreen extends GuiScreen {
         this.buttonList.add(new GuiButton(1, width / 2 - 100, height / 4 + 96 + 12 - 48, "Join"));
         this.buttonList.add(new GuiButton(2, width / 2 - 100, height / 4 + 96 + 36 - 48, "Back"));
         ScaledResolution sr = new ScaledResolution(Minecraft.getMinecraft());
-        this.buttonList.add(new GuiButton(4, Minecraft.getMinecraft().fontRendererObj.getStringWidth(addShortcutMessage) + 5, sr.getScaledHeight() - 5 - 20, 90, 20, "§2Frage ihn an."));
-        this.buttonList.add(new GuiButton(5, Minecraft.getMinecraft().fontRendererObj.getStringWidth(addShortcutMessage) + 5 + 90 + 5, sr.getScaledHeight() - 5 - 20, 90, 20, "§6Eigene Shortcuts"));
+        this.buttonList.add(new GuiButton(4, 5, sr.getScaledHeight() - 5 - 20, 90, 20, "§6Eigene Shortcuts"));
 
         ip = new GuiTextField(3, fontRendererObj, width / 2 - 100, height / 4 + 96 + 12 - 36 - 48, 200, 20);
 
@@ -154,20 +151,6 @@ public class FastJoinScreen extends GuiScreen {
         float boxWidth = right - left;
         drawRect(left, top, (int) (left + (boxWidth / animationTime) * ani), (int) (top + (boxHeight / animationTime) * ani), a.getRGB());
 
-        //Error
-        if(ServerManager.serverError) {
-            String errorMessage = "§cFastJoin couldn't connect to the Server, so you are using an offline Shortcut List.";
-            ScaledResolution sr = new ScaledResolution(Minecraft.getMinecraft());
-            int posX = sr.getScaledWidth() / 2 - Minecraft.getMinecraft().fontRendererObj.getStringWidth(errorMessage) / 2;
-            drawString(fontRendererObj, errorMessage, posX, 5, 0xffffffff);
-        }
-
-        //Request Shortcut
-        ScaledResolution sr = new ScaledResolution(Minecraft.getMinecraft());
-        drawString(fontRendererObj, addShortcutMessage, 5, sr.getScaledHeight() - 12 - 5, 0xffffffff);
-
-
-
         if(showResents) {
             left = 0;
             right = 90 + 2 * 8;
@@ -230,9 +213,6 @@ public class FastJoinScreen extends GuiScreen {
             mc.displayGuiScreen(oldScreen);
         }
         if(button.id == 4) {
-            LabyMod.getInstance().openWebpage("http://diamondcoding.eu/requestShortcut.php", true);
-        }
-        if(button.id == 5) {
             String input = JOptionPane.showInputDialog(null, "Keine Angst, weil dein Minecraft eingefroren ist, sobald du hier fertig bist geht es wieder.\nFormat: SHORTCUT: SERVERIP; SHORTCUT: SERVERIP; ...\nWenn du nicht dieses Format nutzt wird es nicht funktionieren!", addon.personalShortcuts);
             if(input == null) {
                 return;
