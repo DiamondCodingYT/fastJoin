@@ -14,6 +14,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.*;
 import org.lwjgl.input.Keyboard;
 
+import javax.swing.*;
 import java.io.IOException;
 
 public class FastJoinScreen extends GuiScreen {
@@ -47,6 +48,7 @@ public class FastJoinScreen extends GuiScreen {
         this.buttonList.add(new GuiButton(2, width / 2 - 100, height / 4 + 96 + 36 - 48, "Back"));
         ScaledResolution sr = new ScaledResolution(Minecraft.getMinecraft());
         this.buttonList.add(new GuiButton(4, Minecraft.getMinecraft().fontRendererObj.getStringWidth(addShortcutMessage) + 5, sr.getScaledHeight() - 5 - 20, 90, 20, "§2Frage ihn an."));
+        this.buttonList.add(new GuiButton(5, Minecraft.getMinecraft().fontRendererObj.getStringWidth(addShortcutMessage) + 5 + 90 + 5, sr.getScaledHeight() - 5 - 20, 90, 20, "§6Eigene Shortcuts"));
 
         ip = new GuiTextField(3, fontRendererObj, width / 2 - 100, height / 4 + 96 + 12 - 36 - 48, 200, 20);
 
@@ -229,6 +231,16 @@ public class FastJoinScreen extends GuiScreen {
         }
         if(button.id == 4) {
             LabyMod.getInstance().openWebpage("http://diamondcoding.eu/requestShortcut.php", true);
+        }
+        if(button.id == 5) {
+            String input = JOptionPane.showInputDialog(null, "Keine Angst, weil dein Minecraft eingefroren ist, sobald du hier fertig bist geht es wieder.\nFormat: SHORTCUT: SERVERIP; SHORTCUT: SERVERIP; ...\nWenn du nicht dieses Format nutzt wird es nicht funktionieren!", addon.personalShortcuts);
+            if(input == null) {
+                return;
+            }
+            addon.personalShortcuts = input;
+            addon.getConfig().addProperty("personalShortcuts", addon.personalShortcuts);
+            addon.saveConfig();
+            ServerManager.fillServers();
         }
         if(button.id > 9 && button.id < 20) {
             if(RecentManager.getRecent(button.id - 10) != null) {

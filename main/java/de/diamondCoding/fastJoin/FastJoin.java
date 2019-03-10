@@ -18,6 +18,7 @@ public class FastJoin extends LabyModAddon {
     public boolean enabled = true;
     public boolean lastJoin = true;
     public int fastJoinKey = Keyboard.KEY_J;
+    public String personalShortcuts = "";
 
     @Override
     public void onEnable() {
@@ -26,7 +27,7 @@ public class FastJoin extends LabyModAddon {
 
         registerEvents();
 
-        ServerManager.init();
+        ServerManager.init(this);
         RecentManager.init(this);
 
         System.out.println("Enabled FastJoin");
@@ -43,6 +44,7 @@ public class FastJoin extends LabyModAddon {
         this.enabled = !this.getConfig().has("enabled") || this.getConfig().get("enabled").getAsBoolean();
         this.lastJoin = !this.getConfig().has("lastJoin") || this.getConfig().get("lastJoin").getAsBoolean();
         this.fastJoinKey = this.getConfig().has("fastJoin") ? this.getConfig().get("fastJoin").getAsInt() : fastJoinKey;
+        this.personalShortcuts = this.getConfig().has("personalShortcuts") ? this.getConfig().get("personalShortcuts").getAsString() : personalShortcuts;
         FastJoinScreen.animationTime = this.getConfig().has("aniTime") ? this.getConfig().get("aniTime").getAsInt() : FastJoinScreen.animationTime;
         for(int i = 0; i < 10; i++) {
             if(this.getConfig().has("recent" + i)) {
@@ -65,7 +67,7 @@ public class FastJoin extends LabyModAddon {
         } , enabled);
         settings.add(enabledElement);
 
-        final BooleanElement lastJoinElement = new BooleanElement( "Show recent servers" , new ControlElement.IconData(Material.REDSTONE_COMPARATOR), new Consumer<Boolean>() {
+        final BooleanElement lastJoinElement = new BooleanElement( "Show recent Servers" , new ControlElement.IconData(Material.REDSTONE_COMPARATOR), new Consumer<Boolean>() {
             @Override
             public void accept(final Boolean accepted ) {
                 FastJoin.this.lastJoin = accepted;

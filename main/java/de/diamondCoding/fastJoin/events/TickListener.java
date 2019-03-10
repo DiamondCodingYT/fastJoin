@@ -6,6 +6,7 @@ import net.labymod.gui.GuiTagsAdd;
 import net.labymod.gui.ModGuiScreenServerList;
 import net.labymod.labyconnect.gui.GuiFriendsAddFriend;
 import net.labymod.labyconnect.gui.GuiFriendsLayout;
+import net.labymod.mojang.GuiContainerCreativeCustom;
 import net.labymod.settings.LabyModAddonsGui;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.*;
@@ -38,9 +39,11 @@ public class TickListener {
                         || Minecraft.getMinecraft().currentScreen instanceof GuiFriendsLayout
                         || Minecraft.getMinecraft().currentScreen instanceof GuiFriendsAddFriend
                         || Minecraft.getMinecraft().currentScreen instanceof GuiTagsAdd
+                        || Minecraft.getMinecraft().currentScreen instanceof GuiContainerCreativeCustom
                         || Minecraft.getMinecraft().currentScreen instanceof ModGuiScreenServerList) {
                     return;
                 }
+                System.out.println(Minecraft.getMinecraft().currentScreen);
                 Minecraft.getMinecraft().displayGuiScreen(new FastJoinScreen(addon, Minecraft.getMinecraft().currentScreen, addon.lastJoin));
             }
         }

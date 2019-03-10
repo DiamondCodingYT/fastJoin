@@ -1,5 +1,6 @@
 package de.diamondCoding.fastJoin.managers;
 
+import de.diamondCoding.fastJoin.FastJoin;
 import de.diamondCoding.fastJoin.util.JoinabelServer;
 
 import java.io.BufferedReader;
@@ -13,17 +14,29 @@ public class ServerManager {
 
     private static List<JoinabelServer> mcServers;
     public static boolean serverError = false;
+    private static FastJoin addon;
 
-    public static void init() {
+    public static void init(FastJoin theAddon) {
+        addon = theAddon;
         mcServers = new ArrayList<JoinabelServer>();
         fillServers();
     }
 
-    private static void fillServers() {
+    public static void fillServers() {
+
+        mcServers.clear();
+
+        for(String element : addon.personalShortcuts.split(";")) {
+            if(element.equals("")) {
+                continue;
+            }
+            mcServers.add(new JoinabelServer(element.replaceAll(" ", "").split(":")[1], element.replaceAll(" ", "").split(":")[0]));
+        }
+
         try {
 
-            URL oracle = new URL("http://www.diamondcoding.eu/fastJoin/shortcuts.php");
-            BufferedReader in = new BufferedReader(new InputStreamReader(oracle.openStream()));
+            URL url = new URL("http://www.diamondcoding.eu/fastJoin/shortcuts.php");
+            BufferedReader in = new BufferedReader(new InputStreamReader(url.openStream()));
 
             String inputLine;
             while ((inputLine = in.readLine()) != null) {
