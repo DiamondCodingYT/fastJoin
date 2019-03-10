@@ -67,7 +67,7 @@ public class FastJoin extends LabyModAddon {
         } , enabled);
         settings.add(enabledElement);
 
-        final BooleanElement lastJoinElement = new BooleanElement( "Show recent Servers" , new ControlElement.IconData(Material.REDSTONE_COMPARATOR), new Consumer<Boolean>() {
+        final BooleanElement lastJoinElement = new BooleanElement( "Show recent servers" , new ControlElement.IconData(Material.REDSTONE_COMPARATOR), new Consumer<Boolean>() {
             @Override
             public void accept(final Boolean accepted ) {
                 FastJoin.this.lastJoin = accepted;
