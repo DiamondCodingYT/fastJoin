@@ -45,6 +45,8 @@ public class FastJoin extends LabyModAddon {
         this.lastJoin = !this.getConfig().has("lastJoin") || this.getConfig().get("lastJoin").getAsBoolean();
         this.fastJoinKey = this.getConfig().has("fastJoin") ? this.getConfig().get("fastJoin").getAsInt() : fastJoinKey;
         this.personalShortcuts = this.getConfig().has("personalShortcuts") ? this.getConfig().get("personalShortcuts").getAsString() : personalShortcuts;
+        //here comes the fix for a stupid mistake:
+        ServerManager.fillServers();
         FastJoinScreen.animationTime = this.getConfig().has("aniTime") ? this.getConfig().get("aniTime").getAsInt() : FastJoinScreen.animationTime;
         for(int i = 0; i < 10; i++) {
             if(this.getConfig().has("recent" + i)) {
