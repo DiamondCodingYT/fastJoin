@@ -39,7 +39,6 @@ public class TickListener {
                         || Minecraft.getMinecraft().currentScreen instanceof GuiFriendsLayout
                         || Minecraft.getMinecraft().currentScreen instanceof GuiFriendsAddFriend
                         || Minecraft.getMinecraft().currentScreen instanceof GuiTagsAdd
-                        || Minecraft.getMinecraft().currentScreen instanceof GuiContainerCreativeCustom
                         || Minecraft.getMinecraft().currentScreen instanceof ModGuiScreenServerList) {
                     return;
                 }
