@@ -41,6 +41,11 @@ public class FastJoin extends LabyModAddon {
 
     @Override
     public void loadConfig() {
+        if(!this.getConfig().has("updatedToNewShortcutFormat")) {
+            this.getConfig().addProperty("personalShortcuts", "");
+            this.getConfig().addProperty("updatedToNewShortcutFormat", true);
+            this.saveConfig();
+        }
         this.enabled = !this.getConfig().has("enabled") || this.getConfig().get("enabled").getAsBoolean();
         this.lastJoin = !this.getConfig().has("lastJoin") || this.getConfig().get("lastJoin").getAsBoolean();
         this.fastJoinKey = this.getConfig().has("fastJoin") ? this.getConfig().get("fastJoin").getAsInt() : fastJoinKey;
@@ -80,10 +85,25 @@ public class FastJoin extends LabyModAddon {
         } , lastJoin);
         settings.add(lastJoinElement);
 
-        final SliderElement scalingSliderElement = new SliderElement( "Animation Time", new ControlElement.IconData( Material.WATCH ), FastJoinScreen.animationTime );
-        scalingSliderElement.setRange( 1, 30 );
-        scalingSliderElement.setSteps( 1 );
-        scalingSliderElement.addCallback( new Consumer<Integer>() {
+//        final SliderElement scalingSliderElement = new SliderElement( "Animation Time", new ControlElement.IconData( Material.WATCH ), FastJoinScreen.animationTime );
+//        scalingSliderElement.setRange( 1, 30 );
+//        scalingSliderElement.setSteps( 1 );
+//        scalingSliderElement.addCallback( new Consumer<Integer>() {
+//            @Override
+//            public void accept( Integer accepted ) {
+//                FastJoinScreen.animationTime = accepted;
+//
+//                FastJoin.this.getConfig().addProperty("aniTime", accepted);
+//                FastJoin.this.saveConfig();
+//            }
+//        } );
+//        settings.add( scalingSliderElement );
+
+        final NumberElement numberElement = new NumberElement( "Animation Frames", new ControlElement.IconData( Material.WATCH ), FastJoinScreen.animationTime );
+        numberElement.setSteps( 1 );
+        numberElement.setMinValue(1);
+        numberElement.setMaxValue(99999);
+        numberElement.addCallback( new Consumer<Integer>() {
             @Override
             public void accept( Integer accepted ) {
                 FastJoinScreen.animationTime = accepted;
@@ -92,7 +112,7 @@ public class FastJoin extends LabyModAddon {
                 FastJoin.this.saveConfig();
             }
         } );
-        settings.add( scalingSliderElement );
+        settings.add(numberElement);
 
         final KeyElement keyElement = new KeyElement( "Open FastJoin",
                 new ControlElement.IconData(Material.EYE_OF_ENDER),
