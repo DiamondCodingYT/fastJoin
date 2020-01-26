@@ -10,7 +10,6 @@ import org.lwjgl.input.Keyboard;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class ShortcutsScreen extends GuiScreen {
@@ -106,17 +105,24 @@ public class ShortcutsScreen extends GuiScreen {
             drawString(fontRendererObj, msg, sr.getScaledWidth() / 40 * 3, 50, 0xffffffff);
         }
 
-        int index = 0;
-        for(String s : addon.personalShortcuts.split(";")) {
-            if(s.equalsIgnoreCase(" ") || s.equalsIgnoreCase("")) {
-                continue;
+        try {
+            int index = 0;
+            for (String s : addon.personalShortcuts.split(";")) {
+                if (s.equalsIgnoreCase(" ") || s.equalsIgnoreCase("")) {
+                    continue;
+                }
+                String shortcut = s.split(" ")[0];
+                String ip = s.split(" ")[1];
+                drawString(fontRendererObj, "§8Shortcut: §3" + shortcut + " §8IP: §3" + ip, sr.getScaledWidth() / 40 * 3, 70 + (20) * index, 0xffffffff);
+                index++;
             }
-            String shortcut = s.split(" ")[0];
-            String ip = s.split(" ")[1];
-            drawString(fontRendererObj, "§8Shortcut: §3" + shortcut + " §8IP: §3" + ip, sr.getScaledWidth() / 40 * 3, 70 + (20)*index, 0xffffffff);
-            index++;
+        } catch(Exception exception) { //just to be sure if, anything is woring here lets just panic!
+            addon.personalShortcuts = "";
+            addon.getConfig().addProperty("personalShortcuts", addon.personalShortcuts);
+            addon.saveConfig();
+            ServerManager.fillServers();
+            Minecraft.getMinecraft().displayGuiScreen(oldScreen);
         }
-
 
         super.drawScreen(mouseX, mouseY, partialTicks);
     }
@@ -158,13 +164,15 @@ public class ShortcutsScreen extends GuiScreen {
             if(addField.getText().split(" ").length >= 2) {
                 String shortcut = addField.getText().split(" ")[0];
                 String ip = addField.getText().split(" ")[1];
-                addon.personalShortcuts = addon.personalShortcuts + shortcut + " " + ip + ";";
-                addon.getConfig().addProperty("personalShortcuts", addon.personalShortcuts);
-                addon.saveConfig();
-                ServerManager.fillServers();
-                addField.setText("");
-                updateRemoveButtons();
-                updateMsg();
+                if(ip.length() > 1 && shortcut.length() > 1) {
+                    addon.personalShortcuts = addon.personalShortcuts + shortcut + " " + ip + ";";
+                    addon.getConfig().addProperty("personalShortcuts", addon.personalShortcuts);
+                    addon.saveConfig();
+                    ServerManager.fillServers();
+                    addField.setText("");
+                    updateRemoveButtons();
+                    updateMsg();
+                }
             }
         }
         if(button.id == 2) {
