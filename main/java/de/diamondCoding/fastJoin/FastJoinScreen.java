@@ -238,7 +238,7 @@ public class FastJoinScreen extends GuiScreen {
 //            addon.getConfig().addProperty("personalShortcuts", addon.personalShortcuts);
 //            addon.saveConfig();
 //            ServerManager.fillServers();
-            mc.displayGuiScreen(new ShortcutsScreen(addon, oldScreen));
+            mc.displayGuiScreen(new ShortcutsScreen(addon, this));
         }
         if(button.id > 9 && button.id < 20) {
             if(RecentManager.getRecent(button.id - 10) != null) {
