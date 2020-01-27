@@ -164,7 +164,7 @@ public class ShortcutsScreen extends GuiScreen {
             if(addField.getText().split(" ").length >= 2) {
                 String shortcut = addField.getText().split(" ")[0];
                 String ip = addField.getText().split(" ")[1];
-                if(ip.length() > 1 && shortcut.length() > 1) {
+                if(ip.length() > 0 && shortcut.length() > 0) {
                     addon.personalShortcuts = addon.personalShortcuts + shortcut + " " + ip + ";";
                     addon.getConfig().addProperty("personalShortcuts", addon.personalShortcuts);
                     addon.saveConfig();
