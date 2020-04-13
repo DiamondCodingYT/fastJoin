@@ -14,7 +14,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.*;
 import org.lwjgl.input.Keyboard;
 
-import javax.swing.*;
 import java.io.IOException;
 
 public class FastJoinScreen extends GuiScreen {
@@ -38,6 +37,7 @@ public class FastJoinScreen extends GuiScreen {
         serverInfoRenderer = new ServerInfoRenderer("empty", new ServerPingerData("empty", 3000L));
     }
 
+    boolean anyRecents = false;
     public void initGui() {
 
         Keyboard.enableRepeatEvents(true);
@@ -70,6 +70,7 @@ public class FastJoinScreen extends GuiScreen {
                 }
                 if (RecentManager.getRecent(i - 10) != null) {
                     btn = new GuiButton(i, x, pos + (num * 24), 90, 20, "" + RecentManager.getRecent(i - 10).ip);
+                    anyRecents = true;
                 } else {
                     btn = new GuiButton(i, x, pos + (num * 24), 90, 20, "Server not set");
                 }
@@ -101,6 +102,7 @@ public class FastJoinScreen extends GuiScreen {
     private String joinIp = "";
     private String shortcut = "";
 
+    int recentIndex = 0;
     @Override
     protected void keyTyped(char typedChar, int keyCode) throws IOException {
 
@@ -109,10 +111,25 @@ public class FastJoinScreen extends GuiScreen {
 
         if(typedChar == '\r') {
             actionPerformed(buttonList.get(0));
-        }
-        if(keyCode == Keyboard.KEY_ESCAPE) {
+        } else if(keyCode == Keyboard.KEY_ESCAPE) {
             Minecraft.getMinecraft().displayGuiScreen(oldScreen);
+        } else if(keyCode == Keyboard.KEY_UP) {
+            if(ip.getText().length() > 1) {
+                recentIndex++;
+            }
+            if(recentIndex>(RecentManager.recentServers.size()-1)) {
+                recentIndex = 0;
+            }
+            ip.setText(RecentManager.getRecent(recentIndex).ip);
+        } else if(keyCode == Keyboard.KEY_DOWN) {
+            recentIndex--;
+            if(recentIndex<0) {
+                recentIndex = (RecentManager.recentServers.size()-1);
+            }
+            ip.setText(RecentManager.getRecent(recentIndex).ip);
         }
+
+        //RecentManager.getRecent(recentIndex).ip
 
         if(ani >= animationTime) {
             joinIp = ip.getText();
@@ -213,14 +230,15 @@ public class FastJoinScreen extends GuiScreen {
             mc.displayGuiScreen(oldScreen);
         }
         if(button.id == 4) {
-            String input = JOptionPane.showInputDialog(null, "Keine Angst, weil dein Minecraft eingefroren ist, sobald du hier fertig bist geht es wieder.\nFormat: SHORTCUT: SERVERIP; SHORTCUT: SERVERIP; ...\nWenn du nicht dieses Format nutzt wird es nicht funktionieren!", addon.personalShortcuts);
-            if(input == null) {
-                return;
-            }
-            addon.personalShortcuts = input;
-            addon.getConfig().addProperty("personalShortcuts", addon.personalShortcuts);
-            addon.saveConfig();
-            ServerManager.fillServers();
+//            String input = JOptionPane.showInputDialog(null, "Keine Angst, weil dein Minecraft eingefroren ist, sobald du hier fertig bist geht es wieder.\nFormat: SHORTCUT: SERVERIP; SHORTCUT: SERVERIP; ...\nWenn du nicht dieses Format nutzt wird es nicht funktionieren!", addon.personalShortcuts);
+//            if(input == null) {
+//                return;
+//            }
+//            addon.personalShortcuts = input;
+//            addon.getConfig().addProperty("personalShortcuts", addon.personalShortcuts);
+//            addon.saveConfig();
+//            ServerManager.fillServers();
+            mc.displayGuiScreen(new ShortcutsScreen(addon, this));
         }
         if(button.id > 9 && button.id < 20) {
             if(RecentManager.getRecent(button.id - 10) != null) {

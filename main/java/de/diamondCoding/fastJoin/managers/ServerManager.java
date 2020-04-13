@@ -25,7 +25,7 @@ public class ServerManager {
             if(element.equals("")) {
                 continue;
             }
-            mcServers.add(new JoinabelServer(element.replaceAll(" ", "").split(":")[1], element.replaceAll(" ", "").split(":")[0]));
+            mcServers.add(new JoinabelServer(element.split(" ")[1], element.split(" ")[0]));
         }
 
         mcServers.add(new JoinabelServer("minesucht.net", "ms"));
